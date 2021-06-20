@@ -1,6 +1,8 @@
 package database
 
 import (
+	"os"
+
 	"github.com/kangana1024/goadmin-workshop/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -10,14 +12,14 @@ import (
 var DB *gorm.DB
 
 func Connect() error {
-	connection, err := gorm.Open(postgres.Open("postgresql://demo:123456@127.0.0.1/gotodo?sslmode=disable"), &gorm.Config{
+	connection, err := gorm.Open(postgres.Open(os.Getenv("DATABASE_URL")), &gorm.Config{
 		Logger: logger.Default,
 	})
 	if err != nil {
 		return err
 	}
 	DB = connection
-	err = connection.AutoMigrate(&models.User{})
+	err = connection.AutoMigrate(&models.User{}, &models.PasswordReset{})
 	if err != nil {
 		return err
 	}
