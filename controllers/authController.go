@@ -15,7 +15,9 @@ import (
 )
 
 func Home(c *fiber.Ctx) error {
-	return c.SendString("OK ✨")
+	return c.JSON(fiber.Map{
+		"message": "Hello Fiber ✨",
+	})
 }
 
 type RegisterRequest struct {
